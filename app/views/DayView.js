@@ -9,13 +9,15 @@ import {
   View
 } from 'react-native';
 
+var DateTime = require('../DateTime');
+
 var {width, height} = Dimensions.get('window');
 
 module.exports = React.createClass({
   render: function () {
     return (
-        <View style={[styles.day, {backgroundColor: this.props.color}]}>
-        <Text>This is a day view</Text>
+        <View style={styles.day}>
+            <Text>{DateTime.format(this.props.date, "ddd M/D")}</Text>
         </View>
     );
   }
@@ -25,5 +27,9 @@ const styles = StyleSheet.create({
   day: {
     flex: 1,
     width: width * 0.2,
+    backgroundColor: 'skyblue',
+    borderColor: 'black',
+    borderStyle: 'solid',
+    borderWidth: 1,
   }
 });

@@ -8,7 +8,7 @@ not, check out the [react native installation process](http://facebook.github.io
 
     $ git clone https://github.com/dudelson/orgcal.git
     $ cd orgcal
-    $ npm install react react-native react-native-fs react-native-button
+    $ npm install react react-native react-native-fs react-native-button moment --save
     
 # Building and running the app
 Again, assuming you have a working react native environment, fire up an AVD or
