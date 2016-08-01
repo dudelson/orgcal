@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import {
+  Dimensions,
   Text,
   ScrollView,
   StatusBar,
@@ -12,6 +13,8 @@ import Button from 'react-native-button';
 
 var DateTime = require('../DateTime');
 var DayView = require('./DayView');
+
+var {width, height} = Dimensions.get('window');
 
 class WeekView extends Component {
   constructor(props) {
@@ -33,6 +36,13 @@ class WeekView extends Component {
     }
   }
 
+  /**
+   * Switch to the week view containing today
+   */
+  _gotoToday() {
+    this.setState({displayedWeek: DateTime.thisWeek()});
+  }
+
   render () {
     return (
         <View style={styles.container}>
@@ -52,6 +62,13 @@ class WeekView extends Component {
                 <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Friday")}/>
                 <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Saturday")}/>
             </ScrollView>
+            <View style={styles.overlay}>
+                <Button containerStyle={styles.overlayBtnContainer}
+                        style={styles.overlayBtn}
+                        onPress={() => this._gotoToday()}>
+                            Today
+                </Button>
+            </View>
         </View>
     );
   }
@@ -78,6 +95,22 @@ const styles = StyleSheet.create({
   navigatorText: {
     flex: 0.8,
     textAlign: 'center',
+  },
+  overlay: {
+    flex: 1,
+    position: 'absolute',
+    right: 10,
+    bottom: 10,
+    opacity: 0.5,
+  },
+  overlayBtnContainer: {
+    width: 50,
+    height: 20,
+    borderRadius: 4,
+    backgroundColor: 'white',
+  },
+  overlayBtn: {
+    fontSize: 12,
   }
 });
 

@@ -30,8 +30,8 @@ function thisWeek() {
  * @param {Number} n
  */
 function weekRelative(currentWeek, n) {
-  return [Moment(currentWeek[0]).add(n, 'weeks'),
-          Moment(currentWeek[1]).add(n, 'weeks')];
+  return [Moment(currentWeek[0].add(n, 'weeks')),
+          Moment(currentWeek[1].add(n, 'weeks'))];
 }
 
 /**
