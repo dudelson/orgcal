@@ -10,14 +10,28 @@ import {
 } from 'react-native';
 
 var DateTime = require('../DateTime');
+var Org = require('../Org');
+var ScheduledTask = require('./ScheduledTask');
 
 var {width, height} = Dimensions.get('window');
 
 module.exports = React.createClass({
   render: function () {
+    var tasks = Org.getScheduledTasksForDate(this.props.date);
     return (
         <View style={styles.day}>
             <Text>{DateTime.format(this.props.date, "ddd M/D")}</Text>
+            { // dynamically generate scheduled tasks for this date
+            tasks.map((task) => {
+                      return (<ScheduledTask
+                              key={task.id}
+                              text={task.heading}
+                              timestamp={task.timestamp}
+                              location={task.location}
+                              color={task.color}
+                              />
+                              );
+          })}
         </View>
     );
   }
@@ -33,3 +47,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   }
 });
+

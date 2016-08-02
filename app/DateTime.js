@@ -70,6 +70,14 @@ function weekRangeString(week, format) {
 }
 
 /**
+ * Parse a string into a moment object
+ * @param {String} dateString
+ */
+function parse(dateString) {
+  return Moment(dateString);
+}
+
+/**
  * Format a moment object and return the formatted string
  * @param {Object} moment
  * @param {String} formatString
@@ -85,5 +93,6 @@ module.exports = {
   dateForDayOfWeek: dateForDayOfWeek,
   todayString: todayString,
   weekRangeString: weekRangeString,
+  parse: parse,
   format: format,
 }

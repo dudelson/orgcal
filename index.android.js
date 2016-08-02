@@ -1,6 +1,7 @@
 // TODO: figure out how to inherit CSS styles
 // TODO: javascript logging system? (or react logging system?)
 // TODO: learn docjs syntax and make sure DateTime docstrings are correct
+// TODO: rename functions in Org.js better
 
 import React, { Component } from 'react';
 import {
@@ -19,6 +20,8 @@ console.log(Array(59).join('='));
 
 class orgcal extends Component {
   render() {
+    // extract scheduled tasks from org files before we can render anything
+    Org.extractScheduledTasks();
     return (
         <View style={{flex: 1}}>
             <WeekView/>
