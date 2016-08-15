@@ -12,6 +12,7 @@ import {
 var DateTime = require('../DateTime');
 var Org = require('../Org');
 var ScheduledTask = require('./ScheduledTask');
+var Settings = require('../Settings');
 
 var {width, height} = Dimensions.get('window');
 
@@ -40,11 +41,14 @@ module.exports = React.createClass({
 const styles = StyleSheet.create({
   day: {
     flex: 1,
-    width: width * 0.2,
+    // TODO: expose this multiplicative factor as a setting
+    width: width * Settings.dayViewWidthScale,
+    // this height needs to match the height of the hours component in weekview.js
+    height: height * Settings.dayViewHeightScale,
     backgroundColor: 'skyblue',
     borderColor: 'black',
     borderStyle: 'solid',
     borderWidth: 1,
-  }
+  },
 });
 

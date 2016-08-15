@@ -13,6 +13,7 @@ import Button from 'react-native-button';
 
 var DateTime = require('../DateTime');
 var DayView = require('./DayView');
+var Settings = require('../Settings');
 
 var {width, height} = Dimensions.get('window');
 
@@ -44,6 +45,14 @@ class WeekView extends Component {
   }
 
   render () {
+    var hours = [];
+    for(var i=0; i<=24; i++) {
+        if(i === 24) {
+            hours.push(<Text key={i}></Text>);
+        } else {
+            hours.push(<Text key={i}>{i}</Text>);
+        }
+    }
     return (
         <View style={styles.container}>
             <View style={styles.navigator}>
@@ -53,14 +62,17 @@ class WeekView extends Component {
                 </Text>
                 <Button style={styles.btn} onPress={() => this._gotoWeek(1)}>{">"}</Button>
             </View>
-            <ScrollView style={styles.scroll} horizontal={true}>
-                <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Sunday")}/>
-                <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Monday")}/>
-                <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Tuesday")}/>
-                <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Wednesday")}/>
-                <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Thursday")}/>
-                <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Friday")}/>
-                <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Saturday")}/>
+            <ScrollView> 
+                <ScrollView style={styles.scroll} horizontal={true}>
+                    <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Sunday")}/>
+                    <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Monday")}/>
+                    <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Tuesday")}/>
+                    <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Wednesday")}/>
+                    <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Thursday")}/>
+                    <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Friday")}/>
+                    <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Saturday")}/>
+                </ScrollView>
+                <View style={styles.hours}>{hours}</View>
             </ScrollView>
             <View style={styles.overlay}>
                 <Button containerStyle={styles.overlayBtnContainer}
@@ -87,6 +99,17 @@ const styles = StyleSheet.create({
   scroll: {
     flex: 1 - navigatorFlex,
     flexDirection: 'row',
+  },
+  hours: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    //width: 20,
+      height: height * Settings.dayViewHeightScale,
+    opacity: 0.5,
   },
   btn: {
     flex: 0.2,
