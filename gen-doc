@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# builds the orgcal documentation
+
+./node_modules/.bin/jsdoc -d doc -R README.md -r app

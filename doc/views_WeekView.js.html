@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/WeekView.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/WeekView.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+import React, { Component } from 'react';
+import {
+  Dimensions,
+  Text,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  View
+} from 'react-native';
+import Button from 'react-native-button';
+
+var DateTime = require('../DateTime');
+var DayView = require('./DayView');
+var Settings = require('../Settings');
+
+var {width, height} = Dimensions.get('window');
+
+class WeekView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      displayedWeek: DateTime.thisWeek(),
+    };
+  }
+
+  /**
+   * Switch the week view to a different week.
+   * If arg is -1, go back a week, else go forward a week.
+   */
+  _gotoWeek(direction) {
+    if(direction == -1) {
+      this.setState({diplayedWeek: DateTime.weekRelative(this.state.displayedWeek, -1)});
+    } else {
+      this.setState({diplayedWeek: DateTime.weekRelative(this.state.displayedWeek, 1)});
+    }
+  }
+
+  /**
+   * Switch to the week view containing today
+   */
+  _gotoToday() {
+    this.setState({displayedWeek: DateTime.thisWeek()});
+  }
+
+  render () {
+    var hours = [];
+    for(var i=0; i&lt;=24; i++) {
+        if(i === 24) {
+            hours.push(&lt;Text key={i}>&lt;/Text>);
+        } else {
+            hours.push(&lt;Text key={i}>{i}&lt;/Text>);
+        }
+    }
+    return (
+        &lt;View style={styles.container}>
+            &lt;View style={styles.navigator}>
+                &lt;Button style={styles.btn} onPress={() => this._gotoWeek(-1)}>{"  &lt;"}&lt;/Button>
+                &lt;Text style={styles.navigatorText}>
+                    {DateTime.weekRangeString(this.state.displayedWeek, "MMM Do")}
+                &lt;/Text>
+                &lt;Button style={styles.btn} onPress={() => this._gotoWeek(1)}>{">  "}&lt;/Button>
+            &lt;/View>
+            &lt;ScrollView> 
+                &lt;ScrollView style={styles.scroll} horizontal={true}>
+                    &lt;DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Sunday")}/>
+                    &lt;DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Monday")}/>
+                    &lt;DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Tuesday")}/>
+                    &lt;DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Wednesday")}/>
+                    &lt;DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Thursday")}/>
+                    &lt;DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Friday")}/>
+                    &lt;DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, "Saturday")}/>
+                &lt;/ScrollView>
+                &lt;View style={styles.hours}>{hours}&lt;/View>
+            &lt;/ScrollView>
+            &lt;View style={styles.overlay}>
+                &lt;Button containerStyle={styles.overlayBtnContainer}
+                        style={styles.overlayBtn}
+                        onPress={() => this._gotoToday()}>
+                            Today
+                &lt;/Button>
+            &lt;/View>
+        &lt;/View>
+    );
+  }
+}
+
+var navigatorFlex = 0.10;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  navigator: {
+    flex: navigatorFlex,
+    flexDirection: 'row',
+  },
+  scroll: {
+    flex: 1 - navigatorFlex,
+    flexDirection: 'row',
+  },
+  hours: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    //width: 20,
+      height: height * Settings.dayViewHeightScale,
+    opacity: 0.5,
+  },
+  btn: {
+    flex: 0.2,
+    padding: 5,
+  },
+  navigatorText: {
+    flex: 0.8,
+    textAlign: 'center',
+  },
+  overlay: {
+    flex: 1,
+    position: 'absolute',
+    right: 10,
+    bottom: 10,
+    opacity: 0.5,
+  },
+  overlayBtnContainer: {
+    width: 50,
+    height: 20,
+    borderRadius: 4,
+    backgroundColor: 'white',
+  },
+  overlayBtn: {
+    fontSize: 12,
+  }
+});
+
+module.exports = WeekView;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#clone">clone</a></li><li><a href="global.html#dateForDayOfWeek">dateForDayOfWeek</a></li><li><a href="global.html#extractScheduledTasks">extractScheduledTasks</a></li><li><a href="global.html#FORMAT">FORMAT</a></li><li><a href="global.html#format">format</a></li><li><a href="global.html#getDecimalTime">getDecimalTime</a></li><li><a href="global.html#getDuration">getDuration</a></li><li><a href="global.html#getScheduledTask">getScheduledTask</a></li><li><a href="global.html#getScheduledTasksForDate">getScheduledTasksForDate</a></li><li><a href="global.html#id">id</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#parseOrgDate">parseOrgDate</a></li><li><a href="global.html#scheduledTasks">scheduledTasks</a></li><li><a href="global.html#scheduledTasksByDate">scheduledTasksByDate</a></li><li><a href="global.html#setTime">setTime</a></li><li><a href="global.html#thisWeek">thisWeek</a></li><li><a href="global.html#today">today</a></li><li><a href="global.html#todayString">todayString</a></li><li><a href="global.html#weekRangeString">weekRangeString</a></li><li><a href="global.html#weekRelative">weekRelative</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Aug 16 2016 14:55:00 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
