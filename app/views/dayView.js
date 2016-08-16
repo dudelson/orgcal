@@ -17,8 +17,8 @@ class DayView extends Component {
         let mA = Org.getScheduledTask(A);
         let mB = Org.getScheduledTask(B);
 
-        return (mA.start_timestamp.isBetween(mB.start_timestamp, mB.end_timestamp)) ||
-            (mB.start_timestamp.isBetween(mA.start_timestamp, mA.end_timestamp));
+        return (mA.startTimestamp.isBetween(mB.startTimestamp, mB.endTimestamp)) ||
+               (mB.startTimestamp.isBetween(mA.startTimestamp, mA.endTimestamp));
     }
 
     findOverlaps(tasks) {
@@ -76,8 +76,8 @@ class DayView extends Component {
                     return (<ScheduledTask
                         key={task.id}
                         text={task.heading}
-                        start={task.start_timestamp}
-                        end={task.end_timestamp}
+                        start={task.startTimestamp}
+                        end={task.endTimestamp}
                         location={task.location}
                         color={task.color}
                         nOverlaps={slots[t].length}
