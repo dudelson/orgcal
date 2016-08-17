@@ -40,7 +40,7 @@ let scheduledTasksByDate = {
  */
 function parseOrgDate(orgDate) {
     let parts = orgDate.split(' ');
-    var startMoment, endMoment;
+    let startMoment, endMoment;
 
     if (parts.length === 2) {
         startMoment = DateTime.parse(parts[0]);
@@ -132,7 +132,7 @@ function extractScheduledTasks() {
                 .push(task.id);
         }
 
-        statefulObject.subheadings.forEach((subheading, i, arr) => {
+        statefulObject.subheadings.forEach((subheading) => {
             extractTasksRecursive(n + 1, subheading);
         });
     }

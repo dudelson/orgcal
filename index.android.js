@@ -14,9 +14,13 @@ const Menu = require('./app/views/menu');
 console.log(Array(59).join('='));
 
 class orgcal extends Component {
-    render() {
+    constructor() {
+        super();
         // extract scheduled tasks from org files before we can render anything
         Org.extractScheduledTasks();
+    }
+
+    render() {
         return (
             <View style={{ flex: 1 }}>
                 <WeekView />

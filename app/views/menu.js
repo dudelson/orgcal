@@ -16,31 +16,30 @@ class Menu extends Component {
         super();
         this.state = {
             showDrop: false
-        }
+        };
+        this._previousLeft = -0.7 * Settings.windowWidth - 10;
+        this._previousOpacity = 0;
+        this._minLeft = -0.7 * Settings.windowWidth - 10;
+        this._menuStyles = {};
+        this._dropStyles = {};
+        this._CustomLayoutLinear = {
+            duration: 200,
+            create: {
+                type: LayoutAnimation.Types.linear,
+                property: LayoutAnimation.Properties.opacity,
+            },
+            update: {
+                type: LayoutAnimation.Types.easeInEaseOut,
+                property: LayoutAnimation.Properties.opacity,
+            },
+        };
+        this.menu = (null: ? {
+            setNativeProps(props: Object): void
+        });
+        this.drop = (null: ? {
+            setNativeProps(props: Object): void
+        });
     }
-
-    _previousLeft = -0.7 * Settings.windowWidth - 10;
-    _previousOpacity = 0;
-    _minLeft = -0.7 * Settings.windowWidth - 10;
-    _menuStyles = {};
-    _dropStyles = {};
-    _CustomLayoutLinear = {
-        duration: 200,
-        create: {
-            type: LayoutAnimation.Types.linear,
-            property: LayoutAnimation.Properties.opacity,
-        },
-        update: {
-            type: LayoutAnimation.Types.easeInEaseOut,
-            property: LayoutAnimation.Properties.opacity,
-        },
-    };
-    menu = (null: ? {
-        setNativeProps(props: Object): void
-    });
-    drop = (null: ? {
-        setNativeProps(props: Object): void
-    });
 
     _updatePosition() {
         this.menu && this.menu.setNativeProps(this._menuStyles);
@@ -55,7 +54,7 @@ class Menu extends Component {
             this._previousOpacity = 0;
             this.setState({
                 showDrop: false
-            })
+            });
         }
         if (gestureState.vx > 0 || gestureState.dx > 0) {
             this._menuStyles.style.left = 0;
@@ -68,6 +67,7 @@ class Menu extends Component {
     }
 
     componentWillMount() {
+        console.log("previousLeft:", this._previousLeft);
         this._panResponder = PanResponder.create({
             onStartShouldSetPanResponder: (evt, gestureState) =>
                 true,
@@ -77,7 +77,7 @@ class Menu extends Component {
             onPanResponderGrant: (evt, gestureState) => {
                 this.setState({
                     showDrop: true
-                })
+                });
             },
             onPanResponderMove: (evt, gestureState) => {
                 this._menuStyles.style.left = this._previousLeft +
@@ -100,16 +100,14 @@ class Menu extends Component {
                 console.log(this._CustomLayoutLinear);
                 //LayoutAnimation.configureNext(this._CustomLayoutLinear);
             },
-            onPanResponderTerminationRequest: (evt, gestureState) =>
-                true,
+            onPanResponderTerminationRequest: (evt, gestureState) => true,
             onPanResponderRelease: (evt, gestureState) => this._endMove(
                 evt,
                 gestureState),
             onPanResponderTerminate: (evt, gestureState) => this._endMove(
                 evt,
                 gestureState),
-            onShouldBlockNativeResponder: (event, gestureState) =>
-                true,
+            onShouldBlockNativeResponder: (event, gestureState) => true,
         });
 
         this._menuStyles = {
@@ -122,17 +120,15 @@ class Menu extends Component {
                 opacity: this._previousOpacity,
             },
         };
-
     }
 
     componentDidMount() {
         this._updatePosition();
-        //StatusBarIOS.setStyle(1);
     }
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
+                <View style={styles.topContainer}>
                 {this.state.showDrop?<View style={styles.drop} ref={(drop) => {this.drop = drop;}}></View>:<View></View>}
                 <View {...this._panResponder.panHandlers} style={styles.sideMenu} ref={(menu) => {this.menu = menu;}}>
                     <View style={styles.sideMenuContainer}>
@@ -145,6 +141,13 @@ class Menu extends Component {
 }
 
 const styles = StyleSheet.create({
+    topContainer: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: Settings.windowWidth,
+        height: Settings.windowHeight
+    },
     sideMenu: {
         position: 'absolute',
         left: -0.7 * Settings.windowWidth - 10,
