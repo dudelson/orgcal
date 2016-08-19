@@ -1,5 +1,6 @@
 import React, {
     Component,
+    PropTypes,
 } from 'react';
 import {
     Text,
@@ -8,78 +9,63 @@ import {
     View,
 } from 'react-native';
 import Button from 'react-native-button';
-
-const DateTime = require('../datetime');
-const DayView = require('./dayView');
-const Settings = require('../settings');
+import DayViewContainer from '../containers/dayViewContainer';
+import DateTime from '../datetime';
+import Settings from '../settings';
 
 class WeekView extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            displayedWeek: DateTime.thisWeek(),
-        };
-    }
-
-    /**
-     * Switch the week view to a different week.
-     * If arg is -1, go back a week, else go forward a week.
-     */
-    _gotoWeek(direction) {
-        if (direction === -1) {
-            this.setState({
-                diplayedWeek: DateTime.weekRelative(this.state.displayedWeek, -1),
-            });
-        } else {
-            this.setState({
-                diplayedWeek: DateTime.weekRelative(this.state.displayedWeek, 1),
-            });
-        }
-    }
-
-    /**
-     * Switch to the week view containing today
-     */
-    _gotoToday() {
-        this.setState({
-            displayedWeek: DateTime.thisWeek(),
-        });
-    }
-
     render() {
         let hours = [];
         for (let i=0; i<= 24; i++) {
-            if (i === 24) {
-                hours.push(<Text key={i} />);
-            } else {
-                hours.push(<Text key={i}>{i}</Text>);
-            }
+            hours.push(i === 24 ? <Text key={i} /> : <Text key={i}>{i}</Text>);
         }
         return (
             <View style={styles.container}>
                 <View style={styles.navigator}>
-                    <Button style={styles.btn} onPress={() => this._gotoWeek(-1)}>{"  <"}</Button>
+                    <Button style={styles.btn}
+                        onPress={() => this.props.gotoWeek(-1)}
+                    >
+                    {"  <"}
+                    </Button>
                     <Text style={styles.navigatorText}>
-                        {DateTime.weekRangeString(this.state.displayedWeek, 'MMM Do')}
+                        {DateTime.weekRangeString(this.props.displayedWeek, 'MMM Do')}
                     </Text>
-                    <Button style={styles.btn} onPress={() => this._gotoWeek(1)}>{">  "}</Button>
+                    <Button style={styles.btn}
+                        onPress={() => this.props.gotoWeek(1)}
+                    >
+                        {">  "}
+                    </Button>
                 </View>
                 <ScrollView>
-                    <ScrollView style={styles.scroll} horizontal={true}>
-                        <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, 'Sunday')} />
-                        <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, 'Monday')} />
-                        <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, 'Tuesday')} />
-                        <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, 'Wednesday')} />
-                        <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, 'Thursday')} />
-                        <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, 'Friday')} />
-                        <DayView date={DateTime.dateForDayOfWeek(this.state.displayedWeek, 'Saturday')} />
+                    <ScrollView style={styles.scroll} horizontal >
+                        <DayViewContainer
+                            date={DateTime.dateForDayOfWeek(this.props.displayedWeek, 'Sunday')}
+                        />
+                        <DayViewContainer
+                            date={DateTime.dateForDayOfWeek(this.props.displayedWeek, 'Monday')}
+                        />
+                        <DayViewContainer
+                            date={DateTime.dateForDayOfWeek(this.props.displayedWeek, 'Tuesday')}
+                        />
+                        <DayViewContainer
+                            date={DateTime.dateForDayOfWeek(this.props.displayedWeek, 'Wednesday')}
+                        />
+                        <DayViewContainer
+                            date={DateTime.dateForDayOfWeek(this.props.displayedWeek, 'Thursday')}
+                        />
+                        <DayViewContainer
+                            date={DateTime.dateForDayOfWeek(this.props.displayedWeek, 'Friday')}
+                        />
+                        <DayViewContainer
+                            date={DateTime.dateForDayOfWeek(this.props.displayedWeek, 'Saturday')}
+                        />
                     </ScrollView>
                     <View style={styles.hours}>{hours}</View>
                 </ScrollView>
                 <View style={styles.overlay}>
                     <Button containerStyle={styles.overlayBtnContainer}
                         style={styles.overlayBtn}
-                        onPress={() => this._gotoToday()}
+                        onPress={() => this.props.gotoWeek(0)}
                     >
                         Today
                     </Button>
@@ -88,6 +74,11 @@ class WeekView extends Component {
         );
     }
 }
+
+WeekView.propTypes = {
+    displayedWeek: PropTypes.array.isRequired,
+    gotoWeek: PropTypes.func.isRequired,
+};
 
 const navigatorFlex = 0.10;
 
@@ -140,4 +131,4 @@ const styles = StyleSheet.create({
     },
 });
 
-module.exports = WeekView;
+export default WeekView;

@@ -3,16 +3,15 @@
  * see http://redux.js.org/docs/basics/Actions.html
  */
 
-import { dispatch } from 'redux';
-
 export const ADD_TASK = 'ADD_TASK';
 export const TOGGLE_TASK_OVERLAY = 'TOGGLE_TASK_OVERLAY';
+export const SET_DISPLAYED_WEEK = 'SET_DISPLAYED_WEEK';
 
 /**
  * Action creator which adds a task to the redux store
  * @param {ScheduledTask} taskObj the task to add
  */
-function addTask(taskObj) {
+export function addTask(taskObj) {
     return {
         type: ADD_TASK,
         task: taskObj,
@@ -25,7 +24,7 @@ function addTask(taskObj) {
  * @param {Boolean} setVisible set the task overlay to be visible?
  * @param {Number} currentTask the info to display in the overlay. Only applies if <setVisible> is true.
  */
-function toggleTaskOverlay(setVisible, currentTask) {
+export function toggleTaskOverlay(setVisible, currentTask) {
     return {
         type: TOGGLE_TASK_OVERLAY,
         setVisible,
@@ -33,6 +32,14 @@ function toggleTaskOverlay(setVisible, currentTask) {
     };
 }
 
-export const addTask = (taskObj) => dispatch(addTask(taskObj));
-export const toggleTaskOverlay = (setVisible, currentTask) =>
-          dispatch(toggleTaskOverlay(setVisible, currentTask));
+/**
+ * Sets the week displayed in the week view to <week>. <week> should be of the
+ * format returned by DateTime.weekRelative().
+ * @param {Array} week the week to display
+ */
+export function setDisplayedWeek(week) {
+    return {
+        type: SET_DISPLAYED_WEEK,
+        week,
+    };
+}

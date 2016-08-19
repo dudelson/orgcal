@@ -13,26 +13,6 @@ let FORMAT = 'YYYY-MM-DD';
 let id = 0;
 
 /**
- * The object which stores the scheduled tasks.
- * Keys are ids, and values are scheduled task objects. There should be a 1 to 1
- * correspondence between ids and objects
- */
-let scheduledTasks = {};
-
-/**
- * A mapping from moment objects (representing dates) to arrays of scheduled task
- * object ids.
- */
-let scheduledTasksByDate = {
-    getDefault(key) {
-        if (!this[key]) {
-            this[key] = [];
-        }
-        return this[key];
-    },
-};
-
-/**
  * Parses a string from an org file representing a timestamp into a pair of moment
  * objects representing the start and end datetimes of the task.
  * @param {String} orgDate The date to parse
@@ -68,7 +48,7 @@ function parseOrgDate(orgDate) {
  * the scheduled tasks out of each one, populating the scheduledTasks and
  * scheduledTasksByDate objects.
  */
-function extractScheduledTasks() {
+export default function extractScheduledTasks() {
     /* parses and org heading into an object with the following properties:
      *     heading: the text of the heading
      *     content: the top-level contents of this heading (before any subheadings)
@@ -160,28 +140,18 @@ function extractScheduledTasks() {
         });
 }
 
-/**
- * Returns the scheduled task object associated with the input id, or undefined
- * if no such object exists
- * @param {Number} key
- * @returns {Object}
+/* ScheduledTask object
+ *
+ * let ScheduledTask = {
+ *     id: 0,
+ *     startTimestamp: <moment obj>,
+ *     endTimestamp: <moment obj>,
+ *     startDate: <startTimestamp formatted according to FORMAT>,
+ *     endDate: <endTimestamp formatted according to FORMAT>,
+ *     heading: "** I am a heading",
+ *     location: "305 Oak Ave",
+ *     color: "#ff008e",
+ *     overlaps: [4, 6, 34],
+ *     overlapSlot: 2,
+ * }
  */
-function getScheduledTask(key) {
-    return scheduledTasks[key];
-}
-
-/**
- * Returns an array of ScheduledTask objects representing the list of tasks
- * scheduled for <date>. <date> should be a moment object.
- * @param {Object} date
- * @returns {Array}
- */
-function getScheduledTasksForDate(date) {
-    return scheduledTasksByDate.getDefault(DateTime.format(date, FORMAT));
-}
-
-module.exports = {
-    extractScheduledTasks,
-    getScheduledTask,
-    getScheduledTasksForDate,
-};

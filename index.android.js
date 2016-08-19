@@ -8,16 +8,18 @@ import {
 import {
     createStore,
     combineReducers,
+    dispatch,
 } from 'redux';
 import {
     Provider,
 } from 'react-redux';
 import * as reducers from './app/reducers';
-
-const Org = require('./app/org');
-const WeekView = require('./app/views/weekView');
-const TaskInfo = require('./app/views/taskinfo');
-const Menu = require('./app/views/menu');
+import Actions from './app/actions';
+import DateTime from './app/datetime';
+import Org from './app/org';
+import WeekViewContainer from './app/containers/weekViewContainer';
+import Menu from './app/views/menu';
+import TaskInfo from './app/views/taskInfo';
 
 // makes it easy to find the beginning of the current log session
 console.log(Array(59).join('='));
@@ -29,14 +31,16 @@ class orgcal extends Component {
         const reducer = combineReducers(reducers);
         const store = createStore(reducer);
         // extract scheduled tasks from org files before we can render anything
-        Org.extractScheduledTasks();
+        dispatch(Actions.extractScheduledTasks());
+        // set some initial state
+        dispatch(Actions.setDisplayedWeek(DateTime.thisWeek()));
     }
 
     render() {
         return (
             <Provider store={this.store}>
                 <View style={{ flex: 1 }}>
-                    <WeekView />
+                    <WeekViewContainer />
                     <TaskInfo />
                     <Menu />
                 </View>
